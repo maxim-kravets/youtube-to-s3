@@ -1,0 +1,29 @@
+{
+  "name": "maxim-kravets/youtube-to-s3",
+  "description": "This library allows download videos from youtube, transcoding them to different formats and uploads to s3 storage.",
+  "version": "0.1.0",
+  "type": "library",
+  "keywords": ["youtube", "s3", "downloader", "transoding"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Maxim Kravets",
+      "email": "kravets.development@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.2",
+    "norkunas/youtube-dl-php": "^1.6",
+    "aws/aws-sdk-php": "^3.150",
+    "symfony/console": "^5.1",
+    "php-ffmpeg/php-ffmpeg": "^0.16.0",
+    "symfony/dotenv": "^5.1",
+    "php-di/php-di": "^6.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "YoutubeToS3\\": "src/"
+    }
+  }
+}

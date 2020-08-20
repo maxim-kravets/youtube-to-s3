@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+use YoutubeToS3\Service\Facade;
+
+require dirname(__DIR__).'/src/bootstrap.php';
+
+$facade = new Facade();
+$facade->processVideo();
