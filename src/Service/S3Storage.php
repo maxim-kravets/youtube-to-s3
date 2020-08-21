@@ -23,22 +23,23 @@ class S3Storage implements StorageInterface
         foreach ($files as $file) {
             if(is_file($file)) {
                 $filename = basename($file);
+                $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
                 $this->configuration->getS3Client()->putObject([
                     'Bucket' => $this->configuration->getBucket(),
                     'Key'    => $this->configuration->getBucketDir().'/'.$dirname.'/'.$filename,
                     'SourceFile' => $file,
                     '@http' => [
-                        'progress' => $this->getProgressCallback()
+                        'progress' => $this->getProgressCallback($ext)
                     ]
                 ]);
             }
         }
     }
 
-    private function getProgressCallback(): callable
+    private function getProgressCallback(string $ext): callable
     {
-        return function ($downloadTotalSize, $downloadSizeSoFar, $uploadTotalSize, $uploadSizeSoFar) {
+        return function ($downloadTotalSize, $downloadSizeSoFar, $uploadTotalSize, $uploadSizeSoFar) use ($ext) {
 
             if ($uploadSizeSoFar !== 0) {
                 $percentage = round((($uploadSizeSoFar * 100) / $uploadTotalSize), 1);
@@ -46,7 +47,7 @@ class S3Storage implements StorageInterface
                 $percentage = 0;
             }
 
-            echo " \e[32m[S3 uploading] $percentage% uploaded\e[39m                                                 \r";
+            echo " \e[32m[S3 $ext uploading] $percentage% uploaded\e[39m                                                 \r";
         };
     }
 }

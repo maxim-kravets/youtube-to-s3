@@ -34,11 +34,13 @@ class Facade implements FacadeInterface
         $this->console = new SymfonyStyle($input, $output);
     }
 
-    public function processVideo(): void
+    public function processVideo(?string $url = null): void
     {
         $this->cleanupDownloads();
 
-        $url = $this->console->ask('Enter video url to download');
+        if (empty($url)) {
+            $url = $this->console->ask('Enter video url to download');
+        }
 
         $video = $this->videoPlatformService->download($url);
         $this->transcoderService->transcode($video);
@@ -54,8 +56,9 @@ class Facade implements FacadeInterface
         $files = glob(Kernel::getDownloadsDir().'*');
 
         foreach ($files as $file) {
-            if(is_file($file))
+            if(is_file($file)) {
                 unlink($file);
+            }
         }
     }
 

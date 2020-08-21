@@ -4,6 +4,7 @@ namespace YoutubeToS3;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use Symfony\Component\Dotenv\Dotenv;
 
 class Kernel
 {
@@ -12,6 +13,13 @@ class Kernel
     public function __construct()
     {
         $this->initContainer();
+        $this->initDotenv();
+    }
+
+    private function initDotenv()
+    {
+        $dotenv = new Dotenv();
+        $dotenv->loadEnv(dirname(__DIR__).'/.env');
     }
 
     private function initContainer()

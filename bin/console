@@ -4,7 +4,7 @@
 use YoutubeToS3\Kernel;
 use YoutubeToS3\Service\Facade;
 
-require dirname(__DIR__).'/src/bootstrap.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 
 $kernel = new Kernel();
 $facade = $kernel->getContainer()->get(Facade::class);
