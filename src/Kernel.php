@@ -25,4 +25,9 @@ class Kernel
     {
         return $this->container;
     }
+
+    public static function getDownloadsDir(): string
+    {
+        return dirname(__DIR__).'/downloads/';
+    }
 }

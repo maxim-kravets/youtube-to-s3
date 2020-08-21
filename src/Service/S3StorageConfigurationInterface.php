@@ -10,6 +10,5 @@ interface S3StorageConfigurationInterface
 {
     public function getS3Client(): S3Client;
     public function getBucket(): string;
-    public function getVideosDir(): string;
     public function getBucketDir(): string;
 }

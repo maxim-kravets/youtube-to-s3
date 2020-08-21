@@ -7,6 +7,7 @@ namespace YoutubeToS3\Service;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use YoutubeToS3\Kernel;
 
 class Facade implements FacadeInterface
 {
@@ -50,7 +51,7 @@ class Facade implements FacadeInterface
 
     private function cleanupDownloads(): void
     {
-        $files = glob(dirname(__DIR__).'/../downloads/*');
+        $files = glob(Kernel::getDownloadsDir().'*');
 
         foreach ($files as $file) {
             if(is_file($file))

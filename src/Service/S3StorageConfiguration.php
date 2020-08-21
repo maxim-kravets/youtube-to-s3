@@ -8,11 +8,37 @@ class S3StorageConfiguration implements S3StorageConfigurationInterface
 {
     private $S3Client;
     private $bucket;
-    private $videos_dir;
     private $bucket_dir;
 
+    /**
+     * @throws S3InvalidCredential
+     */
     public function __construct()
     {
+        if (empty($_SERVER['AWS_S3_VERSION'])) {
+            throw new S3InvalidCredential('AWS_S3_VERSION can\'t be empty. Fill it in .env');
+        }
+
+        if (empty($_SERVER['AWS_S3_REGION'])) {
+            throw new S3InvalidCredential('AWS_S3_REGION can\'t be empty. Fill it in .env');
+        }
+
+        if (empty($_SERVER['AWS_S3_KEY'])) {
+            throw new S3InvalidCredential('AWS_S3_KEY can\'t be empty. Fill it in .env');
+        }
+
+        if (empty($_SERVER['AWS_S3_SECRET'])) {
+            throw new S3InvalidCredential('AWS_S3_SECRET can\'t be empty. Fill it in .env');
+        }
+
+        if (empty($_SERVER['AWS_S3_BUCKET'])) {
+            throw new S3InvalidCredential('AWS_S3_BUCKET can\'t be empty. Fill it in .env');
+        }
+
+        if (empty($_SERVER['AWS_S3_BUCKET_DIR'])) {
+            throw new S3InvalidCredential('AWS_S3_BUCKET_DIR can\'t be empty. Fill it in .env');
+        }
+
         $this->S3Client = new S3Client([
             'version' => $_SERVER['AWS_S3_VERSION'],
             'region'  => $_SERVER['AWS_S3_REGION'],
@@ -23,7 +49,6 @@ class S3StorageConfiguration implements S3StorageConfigurationInterface
         ]);
 
         $this->bucket = $_SERVER['AWS_S3_BUCKET'];
-        $this->videos_dir = $_SERVER['VIDEOS_DIR'];
         $this->bucket_dir = $_SERVER['AWS_S3_BUCKET_DIR'];
     }
 
@@ -35,11 +60,6 @@ class S3StorageConfiguration implements S3StorageConfigurationInterface
     public function getBucket(): string
     {
         return $this->bucket;
-    }
-
-    public function getVideosDir(): string
-    {
-        return $this->videos_dir;
     }
 
     public function getBucketDir(): string

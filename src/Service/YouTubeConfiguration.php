@@ -5,6 +5,7 @@ namespace YoutubeToS3\Service;
 
 
 use YoutubeDl\YoutubeDl;
+use YoutubeToS3\Kernel;
 
 class YouTubeConfiguration implements YouTubeConfigurationInterface
 {
@@ -17,7 +18,7 @@ class YouTubeConfiguration implements YouTubeConfigurationInterface
             'format' => 'bestvideo'
         ]);
 
-        $this->dl->setDownloadPath($_SERVER['VIDEOS_DIR']);
+        $this->dl->setDownloadPath(Kernel::getDownloadsDir());
         $this->dl->onProgress($this->getProgressCallback());
     }
 

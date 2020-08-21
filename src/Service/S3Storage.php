@@ -3,6 +3,7 @@
 namespace YoutubeToS3\Service;
 
 use YoutubeDl\Entity\Video;
+use YoutubeToS3\Kernel;
 
 class S3Storage implements StorageInterface
 {
@@ -15,14 +16,24 @@ class S3Storage implements StorageInterface
 
     public function upload(Video $video): void
     {
-        $this->configuration->getS3Client()->putObject([
-            'Bucket' => $this->configuration->getBucket(),
-            'Key'    => $this->configuration->getBucketDir().'/'.$video->getFilename(),
-            'SourceFile' => $this->configuration->getVideosDir().'/'.$video->getFilename(),
-            '@http' => [
-                'progress' => $this->getProgressCallback()
-            ]
-        ]);
+        $dirname = str_replace(' ', '_', substr($video->getFilename(), 0, stripos($video->getFilename(), '.')));
+
+        $files = glob(Kernel::getDownloadsDir().'*');
+
+        foreach ($files as $file) {
+            if(is_file($file)) {
+                $filename = basename($file);
+
+                $this->configuration->getS3Client()->putObject([
+                    'Bucket' => $this->configuration->getBucket(),
+                    'Key'    => $this->configuration->getBucketDir().'/'.$dirname.'/'.$filename,
+                    'SourceFile' => $file,
+                    '@http' => [
+                        'progress' => $this->getProgressCallback()
+                    ]
+                ]);
+            }
+        }
     }
 
     private function getProgressCallback(): callable
@@ -35,7 +46,7 @@ class S3Storage implements StorageInterface
                 $percentage = 0;
             }
 
-            echo " \e[32m[S3 uploading] $percentage% uploaded\e[39m                                            \r";
+            echo " \e[32m[S3 uploading] $percentage% uploaded\e[39m                                                 \r";
         };
     }
 }

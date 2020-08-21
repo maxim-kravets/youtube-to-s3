@@ -10,37 +10,42 @@ use FFMpeg\Format\Video\WebM;
 use FFMpeg\Format\Video\WMV;
 use FFMpeg\Format\Video\X264;
 use YoutubeDl\Entity\Video;
+use YoutubeToS3\Kernel;
 
 class Transcoder implements TranscoderInterface
 {
-    private $width = 320;
-    private $height = 240;
-    private $format_x264 = true;
-    private $format_wmv = true;
-    private $format_webm = true;
+    private $configuration;
+
+    public function __construct(TranscoderConfigurationInterface $transcoderConfiguration)
+    {
+        $this->configuration = $transcoderConfiguration;
+    }
 
     public function transcode(Video $youtubeVideo): void
     {
         $ffmpeg = FFMpeg::create();
-        $video = $ffmpeg->open($_SERVER['VIDEOS_DIR'].'/'.$youtubeVideo->getFilename());
+        $video = $ffmpeg->open(Kernel::getDownloadsDir().$youtubeVideo->getFilename());
         $video
             ->filters()
-            ->resize(new Dimension($this->width, $this->height))
+            ->resize(new Dimension(
+                $this->configuration->getWidth(),
+                $this->configuration->getHeight()
+            ))
             ->synchronize();
 
-        if ($this->format_x264) {
+        if ($this->configuration->isFormatX264()) {
             $format = (new X264())->on('progress', $this->getProgressCallback());
-            $video->save($format, 'export-x264.mp4');
+            $video->save($format, Kernel::getDownloadsDir().'video.mp4');
         }
 
-        if ($this->format_wmv) {
+        if ($this->configuration->isFormatWmv()) {
             $format = (new WMV())->on('progress', $this->getProgressCallback());
-            $video->save($format, 'export-wmv.wmv');
+            $video->save($format, Kernel::getDownloadsDir().'video.wmv');
         }
 
-        if ($this->format_webm) {
+        if ($this->configuration->isFormatWebm()) {
             $format = (new WebM())->on('progress', $this->getProgressCallback());
-            $video->save($format, 'export-webm.webm');
+            $video->save($format, Kernel::getDownloadsDir().'video.webm');
         }
     }
 
