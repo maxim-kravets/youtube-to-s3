@@ -35,6 +35,8 @@ class Facade implements FacadeInterface
 
     public function processVideo(): void
     {
+        $this->cleanupDownloads();
+
         $url = $this->console->ask('Enter video url to download');
 
         $video = $this->videoPlatformService->download($url);
@@ -42,6 +44,18 @@ class Facade implements FacadeInterface
         $this->storageService->upload($video);
 
         $this->console->success('Video successfully uploaded');
+
+        $this->cleanupDownloads();
+    }
+
+    private function cleanupDownloads(): void
+    {
+        $files = glob(dirname(__DIR__).'/../downloads/*');
+
+        foreach ($files as $file) {
+            if(is_file($file))
+                unlink($file);
+        }
     }
 
 }
