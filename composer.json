@@ -12,6 +12,7 @@
       "role": "Developer"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "php": "^7.2",
     "norkunas/youtube-dl-php": "^1.6",
