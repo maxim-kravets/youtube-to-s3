@@ -15,7 +15,19 @@ class S3Storage implements StorageInterface
 
     public function upload(Video $video): void
     {
-        $progressBar = function ($downloadTotalSize, $downloadSizeSoFar, $uploadTotalSize, $uploadSizeSoFar) {
+        $this->configuration->getS3Client()->putObject([
+            'Bucket' => $this->configuration->getBucket(),
+            'Key'    => $this->configuration->getBucketDir().'/'.$video->getFilename(),
+            'SourceFile' => $this->configuration->getVideosDir().'/'.$video->getFilename(),
+            '@http' => [
+                'progress' => $this->getProgressCallback()
+            ]
+        ]);
+    }
+
+    private function getProgressCallback(): callable
+    {
+        return function ($downloadTotalSize, $downloadSizeSoFar, $uploadTotalSize, $uploadSizeSoFar) {
 
             if ($uploadSizeSoFar !== 0) {
                 $percentage = round((($uploadSizeSoFar * 100) / $uploadTotalSize), 1);
@@ -23,16 +35,7 @@ class S3Storage implements StorageInterface
                 $percentage = 0;
             }
 
-            echo "\e[32m [storage uploading] $percentage% uploaded\e[39m \r";
+            echo " \e[32m[S3 uploading] $percentage% uploaded\e[39m                                            \r";
         };
-
-        $this->configuration->getS3Client()->putObject([
-            'Bucket' => $this->configuration->getBucket(),
-            'Key'    => $this->configuration->getBucketDir().'/'.$video->getFilename(),
-            'SourceFile' => $this->configuration->getVideosDir().'/'.$video->getFilename(),
-            '@http' => [
-                'progress' => $progressBar
-            ]
-        ]);
     }
 }

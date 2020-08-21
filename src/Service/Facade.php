@@ -15,25 +15,18 @@ class Facade implements FacadeInterface
     private $storageService;
     private $console;
 
-    public function __construct(StorageInterface $storageService)
-    {
-        $this->initVideoPlatformService();
-        $this->initTranscoderService();
+    public function __construct(
+        VideoPlatformInterface $videoPlatformService,
+        TranscoderInterface $transcoderService,
+        StorageInterface $storageService
+    ) {
+        $this->videoPlatformService = $videoPlatformService;
+        $this->transcoderService = $transcoderService;
         $this->storageService = $storageService;
         $this->initConsole();
     }
 
-    private function initVideoPlatformService()
-    {
-        $this->videoPlatformService = new YouTube();
-    }
-
-    private function initTranscoderService()
-    {
-        $this->transcoderService = new Transcoder();
-    }
-
-    private function initConsole()
+    private function initConsole(): void
     {
         $input = new ArgvInput();
         $output = new ConsoleOutput();

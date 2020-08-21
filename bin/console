@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+use YoutubeToS3\Kernel;
 use YoutubeToS3\Service\Facade;
 
 require dirname(__DIR__).'/src/bootstrap.php';
 
-$facade = new Facade();
+$kernel = new Kernel();
+$facade = $kernel->getContainer()->get(Facade::class);
 $facade->processVideo();

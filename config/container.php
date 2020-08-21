@@ -12,13 +12,13 @@ use YoutubeToS3\Service\VideoPlatformInterface;
 use YoutubeToS3\Service\YouTube;
 use YoutubeToS3\Service\YouTubeConfiguration;
 use YoutubeToS3\Service\YouTubeConfigurationInterface;
-use function DI\create;
+use function DI\get;
 
 return [
-    VideoPlatformInterface::class => create(YouTube::class),
-    StorageInterface::class => create(S3Storage::class),
-    TranscoderInterface::class => create(Transcoder::class),
-    S3StorageConfigurationInterface::class => create(S3StorageConfiguration::class),
-    YouTubeConfigurationInterface::class => create(YouTubeConfiguration::class),
-    FacadeInterface::class => create(Facade::class)
+    VideoPlatformInterface::class => get(YouTube::class),
+    StorageInterface::class => get(S3Storage::class),
+    TranscoderInterface::class => get(Transcoder::class),
+    S3StorageConfigurationInterface::class => get(S3StorageConfiguration::class),
+    YouTubeConfigurationInterface::class => get(YouTubeConfiguration::class),
+    FacadeInterface::class => get(Facade::class)
 ];
