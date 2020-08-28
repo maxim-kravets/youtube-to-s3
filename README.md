@@ -12,7 +12,7 @@ $ composer require maxim-kravets/youtube-to-s3
 
 Then create .env and fill configuration variables:
 
-```
+```dotenv
 AWS_S3_VERSION=latest
 AWS_S3_REGION=your_region
 AWS_S3_KEY=YOUR_AWS_API_KEY
