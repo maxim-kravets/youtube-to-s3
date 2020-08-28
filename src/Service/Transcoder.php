@@ -16,9 +16,9 @@ class Transcoder implements TranscoderInterface
 {
     private $configuration;
 
-    public function __construct(TranscoderConfigurationInterface $transcoderConfiguration)
+    public function __construct()
     {
-        $this->configuration = $transcoderConfiguration;
+        $this->configuration = new TranscoderConfiguration();
     }
 
     public function transcode(Video $youtubeVideo): void

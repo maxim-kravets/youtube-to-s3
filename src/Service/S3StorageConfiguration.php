@@ -4,7 +4,7 @@ namespace YoutubeToS3\Service;
 
 use Aws\S3\S3Client;
 
-class S3StorageConfiguration implements S3StorageConfigurationInterface
+class S3StorageConfiguration
 {
     private $S3Client;
     private $bucket;

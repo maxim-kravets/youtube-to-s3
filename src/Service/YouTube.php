@@ -8,9 +8,9 @@ class YouTube implements VideoPlatformInterface
 {
     private $configuration;
 
-    public function __construct(YouTubeConfigurationInterface $youTubeConfiguration)
+    public function __construct()
     {
-        $this->configuration = $youTubeConfiguration;
+        $this->configuration = new YouTubeConfiguration();
     }
 
     public function download(string $url)

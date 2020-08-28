@@ -4,7 +4,7 @@
 namespace YoutubeToS3\Service;
 
 
-class TranscoderConfiguration implements TranscoderConfigurationInterface
+class TranscoderConfiguration
 {
     private $width = 320;
     private $height = 240;

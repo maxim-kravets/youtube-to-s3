@@ -7,7 +7,7 @@ namespace YoutubeToS3\Service;
 use YoutubeDl\YoutubeDl;
 use YoutubeToS3\Kernel;
 
-class YouTubeConfiguration implements YouTubeConfigurationInterface
+class YouTubeConfiguration
 {
     private $dl;
 

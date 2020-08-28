@@ -9,9 +9,9 @@ class S3Storage implements StorageInterface
 {
     private $configuration;
 
-    public function __construct(S3StorageConfigurationInterface $s3StorageConfiguration)
+    public function __construct()
     {
-        $this->configuration = $s3StorageConfiguration;
+        $this->configuration = new S3StorageConfiguration();
     }
 
     public function upload(Video $video): void

@@ -29,7 +29,7 @@ TRANSCODER_VIDEO_FORMATS="x264, wmv, webm"
 
 For using this library in your projects, you can just run:
 
-```
+```php
 use YoutubeToS3\Kernel;
 use YoutubeToS3\Service\Facade;
 
@@ -42,7 +42,7 @@ $facade->processVideo();
 
 or pass YouTube url directly:
 
-```
+```php
 $facade->processVideo($url);
 ```
 
